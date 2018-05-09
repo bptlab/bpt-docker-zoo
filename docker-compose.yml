@@ -36,10 +36,12 @@ services:
             - UNICORN_DB_TEST_DB=eap_testing
     gryphon:
         image: bptlab/gryphon:dev
+        ports:
+            - 8083:3000
         volumes:
             - gryphon-mongodb-data:/var/lib/mongodb
     database:
-        image: mysql:latest
+        image: mysql:5.7
         volumes:
             - mysql-data:/var/lib/mysql
             - ./mysql-init:/docker-entrypoint-initdb.d
