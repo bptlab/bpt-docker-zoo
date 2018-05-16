@@ -9,8 +9,6 @@ services:
 
     chimera:
         image: bptlab/chimera:dev
-        ports:
-            - 8081:8080
         environment:
             - CHIMERA_DEPLOY_NAME=Chimera
             - CHIMERA_DB_HOST=database
@@ -24,8 +22,6 @@ services:
         image: bptlab/unicorn:dev
         volumes:
             - ./server-config.xml:/usr/local/tomcat/conf/server-template.xml
-        ports:
-            - 8082:8080
         environment:
             - UNICORN_DEPLOY_NAME=Unicorn
             - UNICORN_DB_HOST=database
@@ -36,8 +32,6 @@ services:
             - UNICORN_DB_TEST_DB=eap_testing
     gryphon:
         image: bptlab/gryphon:dev
-        ports:
-            - 8083:3000
         volumes:
             - gryphon-mongodb-data:/var/lib/mongodb
     database:
