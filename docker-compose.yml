@@ -5,35 +5,40 @@ services:
         ports:
             - 8080:80
         volumes:
-            - ./nginx-config.conf:/etc/nginx/nginx.conf:ro
+            - ./nginx.conf.tpl:/etc/nginx/nginx.conf.tpl:ro
+        env_file:
+            - host.env
+        command: /bin/sh -c "envsubst '$$DEPLOY_PATH $$CHIMERA_DEPLOY_NAME $$UNICORN_DEPLOY_NAME $$GRYPHON_DEPLOY_NAME' < /etc/nginx/nginx.conf.tpl > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
 
     chimera:
         image: bptlab/chimera:dev
         environment:
-            - CHIMERA_DEPLOY_NAME=Chimera
             - CHIMERA_DB_HOST=database
             - CHIMERA_DB_PORT=3306
             - CHIMERA_DB_USERNAME=root
             - CHIMERA_DB_PASSWORD=root
             - CHIMERA_DB_NAME=JEngineV2_ChimeraDev
-            - UNICORN_URL=http://unicorn:8080
-            - UNICORN_DEPLOY_NAME=/Unicorn
+        env_file:
+            - host.env
     unicorn:
         image: bptlab/unicorn:dev
         volumes:
             - ./server-config.xml:/usr/local/tomcat/conf/server-template.xml
         environment:
-            - UNICORN_DEPLOY_NAME=Unicorn
             - UNICORN_DB_HOST=database
             - UNICORN_DB_PORT=3306
             - UNICORN_DB_USER=root
             - UNICORN_DB_PASSWORD=root
             - UNICORN_DB_DEV_DB=eap_development
             - UNICORN_DB_TEST_DB=eap_testing
+        env_file:
+            - host.env
     gryphon:
         image: bptlab/gryphon:dev
         volumes:
             - gryphon-mongodb-data:/var/lib/mongodb
+        env_file:
+            - host.env
     database:
         image: mysql:5.7
         volumes:
