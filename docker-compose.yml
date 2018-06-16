@@ -18,6 +18,8 @@ services:
             - CHIMERA_DB_USERNAME=root
             - CHIMERA_DB_PASSWORD=root
             - CHIMERA_DB_NAME=JEngineV2_ChimeraDev
+            - CHIMERA_MAIL_USER=chimera.bptlab@gmail.com
+            - CHIMERA_MAIL_PASSWORD=chimera123
         env_file:
             - host.env
     unicorn:
