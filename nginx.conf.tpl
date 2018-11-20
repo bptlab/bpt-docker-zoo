@@ -22,5 +22,10 @@ http {
         location $DEPLOY_PATH/$GRYPHON_DEPLOY_NAME/ {
             proxy_pass http://gryphon:3000/;
         }
+
+        rewrite ^$DEPLOY_PATH/$SPHINX_DEPLOY_NAME$ $scheme://$http_host$DEPLOY_PATH/$SPHINX_DEPLOY_NAME/ permanent;
+        location $DEPLOY_PATH/$SPHINX_DEPLOY_NAME/ {
+          proxy_pass http://sphinx:3001/;
+        }
     }
 }
