@@ -11,7 +11,7 @@ services:
         command: /bin/sh -c "envsubst '$$DEPLOY_PATH $$CHIMERA_DEPLOY_NAME $$UNICORN_DEPLOY_NAME $$GRYPHON_DEPLOY_NAME $$SPHINX_DEPLOY_NAME' < /etc/nginx/nginx.conf.tpl > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
 
     chimera:
-        image: bptlab/chimera:dev
+        image: bptlab/chimera:smile
         environment:
             - CHIMERA_DB_HOST=database
             - CHIMERA_DB_PORT=3306
@@ -23,7 +23,7 @@ services:
         env_file:
             - host.env
     unicorn:
-        image: bptlab/unicorn:dev
+        image: bptlab/unicorn:smile
         volumes:
             - ./server-config.xml:/usr/local/tomcat/conf/server-template.xml
         environment:
@@ -36,13 +36,14 @@ services:
         env_file:
             - host.env
     gryphon:
-        image: bptlab/gryphon:dev
+        image: bptlab/gryphon:smile
         volumes:
             - gryphon-mongodb-data:/var/lib/mongodb
         env_file:
             - host.env
+        restart: on-failure
     sphinx:
-        image: lichtblau/smile:develop
+        image: bptlab/sphinx:develop
         env_file:
             - host.env
     database:
