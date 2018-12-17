@@ -44,6 +44,7 @@ services:
         restart: on-failure
     sphinx:
         image: bptlab/sphinx:develop
+        command: npm start
         env_file:
             - host.env
     database:
