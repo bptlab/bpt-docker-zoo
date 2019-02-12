@@ -14,7 +14,10 @@ http {
         }
 
         rewrite ^$DEPLOY_PATH/$UNICORN_DEPLOY_NAME$ $scheme://$http_host$DEPLOY_PATH/$UNICORN_DEPLOY_NAME/ permanent;
-        location ^~ $DEPLOY_PATH/$UNICORN_DEPLOY_NAME/webapi/REST/Event {
+        location = $DEPLOY_PATH/$UNICORN_DEPLOY_NAME/webapi/REST/Event {
+            proxy_pass http://sphinx:3001/sis_event;
+        }
+        location = $DEPLOY_PATH/$UNICORN_DEPLOY_NAME/webapi/REST/Event/ {
             proxy_pass http://sphinx:3001/sis_event;
         }
         location $DEPLOY_PATH/$UNICORN_DEPLOY_NAME/ {
@@ -29,6 +32,11 @@ http {
         rewrite ^$DEPLOY_PATH/$SPHINX_DEPLOY_NAME$ $scheme://$http_host$DEPLOY_PATH/$SPHINX_DEPLOY_NAME/ permanent;
         location $DEPLOY_PATH/$SPHINX_DEPLOY_NAME/ {
           proxy_pass http://sphinx:3001/;
+        }
+
+        rewrite ^$DEPLOY_PATH/$CAZ_DEPLOY_NAME$ $scheme://$http_host$DEPLOY_PATH/$CAZ_DEPLOY_NAME/ permanent;
+        location $DEPLOY_PATH/$CAZ_DEPLOY_NAME/ {
+          proxy_pass http://caz:3000/;
         }
     }
 }
