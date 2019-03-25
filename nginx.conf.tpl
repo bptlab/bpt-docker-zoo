@@ -15,10 +15,10 @@ http {
 
         rewrite ^$DEPLOY_PATH/$UNICORN_DEPLOY_NAME$ $scheme://$http_host$DEPLOY_PATH/$UNICORN_DEPLOY_NAME/ permanent;
         location = $DEPLOY_PATH/$UNICORN_DEPLOY_NAME/webapi/REST/Event {
-            proxy_pass http://sphinx:3001/sis_event;
+            proxy_pass http://caz:3000/sis/parcels;
         }
         location = $DEPLOY_PATH/$UNICORN_DEPLOY_NAME/webapi/REST/Event/ {
-            proxy_pass http://sphinx:3001/sis_event;
+            proxy_pass http://caz:3000/sis/parcels;
         }
         location $DEPLOY_PATH/$UNICORN_DEPLOY_NAME/ {
             proxy_pass http://unicorn:8080/$UNICORN_DEPLOY_NAME/;
